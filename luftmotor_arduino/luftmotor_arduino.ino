@@ -7,8 +7,8 @@ int external_led = 7;
 int valve_pin = 8;
 int sensor = A0;
 
-const float tdc_volume = 0.0000003352858347057703;
-const float stroke_volume = 0.00003110176727053895;
+const double tdc_volume = 3.352858347057703e-7;
+const double stroke_volume = 3.110176727053895e-5;
 
 void setup() {
   Serial.begin(9600);
@@ -26,12 +26,12 @@ void loop() {
     digitalWrite(external_led, LOW);
     digitalWrite(valve_pin, LOW);
   } else {
-    //Serial.println(analogRead(sensor));
-    short pressure = 800000;
+    Serial.println(analogRead(sensor));
+    double pressure = 2e5;
     unsigned long start_time = micros();
-    float inlet_closing = (acos((2*tdc_volume + stroke_volume - (2*(100000*tdc_volume + 100000*stroke_volume))/pressure)/stroke_volume))/(2*PI);
+    double inlet_closing = acos((2*tdc_volume + stroke_volume - (2e5*(tdc_volume + stroke_volume))/pressure)/stroke_volume);
     unsigned long stop_time = micros();
-    Serial.println(inlet_closing);
+    //Serial.println(inlet_closing, 5);
     delay(10);
   }
 }
