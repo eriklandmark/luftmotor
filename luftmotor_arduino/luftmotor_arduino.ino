@@ -5,7 +5,7 @@
 #define TEST_SOLENOID false
 #define TEST_MOTOR false
 #define TEST_LIGHT false
-#define TEST_SENSOR false
+#define TEST_SENSOR true
 
 MS5803 sensor(ADDRESS_HIGH);
 
@@ -30,7 +30,7 @@ void setup() {
     pinMode(external_led, OUTPUT);
     pinMode(valve_pin, OUTPUT);
     pinMode(light_sensor, INPUT);
-    analogReadResolution(10);
+    //analogReadResolution(10);
     
     pinMode(motorPin1, OUTPUT);
     pinMode(motorPin2, OUTPUT);
@@ -64,8 +64,8 @@ void loop() {
   }
   if (TEST_SENSOR) {
     double pressure = sensor.getPressure(ADC_2048)*100;
-    Serial.print(micros());
-    Serial.print("\t");
+    //Serial.print(micros());
+    //Serial.print("\t");
     Serial.println(pressure);
     if (!TEST_MOTOR) {
       //delay(10);
