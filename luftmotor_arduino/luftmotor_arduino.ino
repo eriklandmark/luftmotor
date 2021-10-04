@@ -3,9 +3,9 @@
 #include <math.h>
 
 #define TEST_SOLENOID false
-#define TEST_MOTOR false
-#define TEST_LIGHT false
-#define TEST_SENSOR true
+#define TEST_MOTOR true
+#define TEST_LIGHT true
+#define TEST_SENSOR false
 
 MS5803 sensor(ADDRESS_HIGH);
 
@@ -21,7 +21,7 @@ int motorPin1 = 9; // Blue - 28BYJ48 pin 1
 int motorPin2 = 10; // Pink - 28BYJ48 pin 2
 int motorPin3 = 11; // Yellow - 28BYJ48 pin 3
 int motorPin4 = 12; // Orange - 28BYJ48 pin 4
-int motorSpeed = 780; //variable to set stepper speed
+int motorSpeed = 800; //variable to set stepper speed
 int lookup[8] = {B01000, B01100, B00100, B00110, B00010, B00011, B00001, B01001};
 
 void setup() {
