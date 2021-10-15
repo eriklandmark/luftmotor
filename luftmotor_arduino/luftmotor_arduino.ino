@@ -3,7 +3,7 @@
 #include <math.h>
 
 #define TEST_SOLENOID false
-#define TEST_MOTOR true
+#define TEST_MOTOR false
 #define TEST_LIGHT true
 #define TEST_SENSOR false
 
@@ -12,10 +12,11 @@ MS5803 sensor(ADDRESS_HIGH);
 int led = LED_BUILTIN;
 int external_led = 8;
 int valve_pin = 7;
-int light_sensor = A0;
-
-const double tdc_volume = 3.352858347057703e-7;
-const double stroke_volume = 3.110176727053895e-5;
+int light_sensor_1 = A1;
+int light_sensor_2 = A2;
+int sensor_offset_pin = A0;
+int sensor_digital_pin_1 = 2;
+int sensor_digital_pin_2 = 3;
 
 int motorPin1 = 9; // Blue - 28BYJ48 pin 1
 int motorPin2 = 10; // Pink - 28BYJ48 pin 2
@@ -29,8 +30,11 @@ void setup() {
     Serial.begin(9600);
     pinMode(external_led, OUTPUT);
     pinMode(valve_pin, OUTPUT);
-    pinMode(light_sensor, INPUT);
-    //analogReadResolution(10);
+    pinMode(light_sensor_1, INPUT);
+    pinMode(light_sensor_2, INPUT);
+    pinMode(sensor_digital_pin_1, INPUT);
+    pinMode(sensor_digital_pin_2, INPUT);
+    pinMode(sensor_offset_pin, INPUT);
     
     pinMode(motorPin1, OUTPUT);
     pinMode(motorPin2, OUTPUT);
@@ -54,12 +58,24 @@ void loop() {
     clockwise();
   }
   if (TEST_LIGHT) {
-    int light_val = analogRead(light_sensor);
+    int light_sensor_val_1 = analogRead(light_sensor_1);
+    int light_sensor_val_2 = analogRead(light_sensor_2);
+    int voltage_val = analogRead(sensor_offset_pin);
+    int output_val_1 = digitalRead(sensor_digital_pin_1);
+    int output_val_2 = digitalRead(sensor_digital_pin_2);
     Serial.print(micros());
     Serial.print("\t");
-    Serial.println(light_val);
+    Serial.print(voltage_val);
+    Serial.print("\t");
+    Serial.print(light_sensor_val_1);
+    Serial.print("\t");
+    Serial.print(light_sensor_val_2);
+    Serial.print("\t");
+    Serial.print(output_val_1*30);
+    Serial.print("\t");
+    Serial.println(output_val_2*30);
     if (!TEST_MOTOR) {
-      delay(10);
+      delay(1);
     }
   }
   if (TEST_SENSOR) {
@@ -67,18 +83,7 @@ void loop() {
     //Serial.print(micros());
     //Serial.print("\t");
     Serial.println(pressure);
-    if (!TEST_MOTOR) {
-      //delay(10);
-    }
   }
-  /*
-  double pressure = 2e5;
-  unsigned long start_time = micros();
-  double inlet_closing = acos((2*tdc_volume + stroke_volume - (2e5*(tdc_volume + stroke_volume))/pressure)/stroke_volume);
-  unsigned long stop_time = micros();
-  //Serial.println(inlet_closing, 5);
-  delay(10);
-  */
 }
 
 void anticlockwise() {
